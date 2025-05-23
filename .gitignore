@@ -7,3 +7,5 @@ tmgevn/
 .env
 venv/
 .venv/	tmgevn/
+.env
+tmgevn/
