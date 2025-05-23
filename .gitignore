@@ -1,8 +1,9 @@
 # Virtual environments
 .tmgevn/
-tmgevn
+tmgevn/
 
 
 # Environment variables
 .env
-.env.*
+venv/
+.venv/	tmgevn/
