@@ -139,6 +139,7 @@ class TrafficConsumer(AsyncWebsocketConsumer):
             # Video source - webcam (0) or video file
             # VIDEO_SOURCE = os.getenv("VIDEO_SOURCE", "apps/trafficapp/static/video/cars.mp4")
             VIDEO_SOURCE = os.getenv("VIDEO_SOURCE", "apps/trafficapp/static/video/mile2Bridge1.mp4")
+
             # VIDEO_SOURCE = os.getenv("WEB_CAM", 0)  # 0 is typically the default webcam
             
             # Class names for detection

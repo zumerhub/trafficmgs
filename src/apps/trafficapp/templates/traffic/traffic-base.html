@@ -28,9 +28,9 @@
 </head>
 <body>
   <header class="site-header">
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark ">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'traffic:index' %}">TrafficMGS</a>
+            <a class="navbar-brand fw-bold" logo="" href="{% url 'traffic:index' %}"><i class="bi bi-stoplights">TRAFFIC - MGS</i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -45,7 +45,7 @@
                         <a class="nav-link" href="{% url 'traffic:dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Abouts</a>
+                        <a class="nav-link" href="{% url 'blog-about' %}">About</a>
                     </li>
                 </ul>
             </div>

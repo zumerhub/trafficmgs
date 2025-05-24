@@ -62,6 +62,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://your-production-url.com',
+]
+
+
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (for testing)
+
+# ngrok config
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+
+# start ngrok
+# ngrok http 8000
+
+
 ROOT_URLCONF = 'trafficsite.urls'
 
 TEMPLATES = [

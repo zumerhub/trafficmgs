@@ -244,7 +244,7 @@
       <header class="site-header">
         <nav class="navbar navbar-expand-lg fixed-top" aria-label="Main navigation">
           <div class="container">
-            <a class="navbar-brand fw-bold" logo="" href="{% url 'traffic:index' %}">TrafficMGS</a>
+            <a class="navbar-brand fw-bold" logo="" href="{% url 'traffic:index' %}"><i class="bi bi-stoplights">TrafficMGS</i></a>
             <button 
               class="navbar-toggler" 
               type="button" 
@@ -348,28 +348,7 @@
       </main>
 
       <!-- Footer -->
-      {% comment %} <footer class="modern-footer text-center">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <p class="mb-2">
-                <span class="text-gradient fw-bold">SMART-ROUTES</span> - 
-                Navigating the future of intelligent transportation
-              </p>
-              <p class="text-white-50 small">
-                © 2025 Smart Routes. Built with ❤️ using Django & Bootstrap
-              </p>
-              <div class="mt-3">
-                <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-github"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-envelope"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer> {% endcomment %}
-    <footer>
+     <footer>
   <div class="modern-footer text-center container">
     <div class="row">
       <div class="col-md-12">
@@ -380,9 +359,7 @@
         <p class="text-white-50 small">
           © 2025 Traffic Monitoring System... Built with Django & Bootstrap
         </p>
-        <a href="#" class="scroll-to-top" aria-label="Scroll to top">
-          <i class="bi bi-arrow-up-circle"></i>
-        </a>
+        
         <div class="mt-3">
           <a href="#" class="text-white me-3" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter"></i></a>
           <a href="#" class="text-white me-3" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i></a>
@@ -390,16 +367,10 @@
           <a href="#" class="text-white" aria-label="Email"><i class="bi bi-envelope"></i></a>
         </div>
       </div>
+      
     </div>
   </div>
-  <script>
-    document.querySelectorAll('.scroll-to-top').forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({top: 0, behavior: 'smooth'});
-      });
-    });
-  </script>
+
 </footer>
     
     </div>
@@ -416,247 +387,3 @@
 
 
 
-
-{% comment %} 
- {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link 
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
-      rel="stylesheet" 
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
-      crossorigin="anonymous"
-    />
-    <link 
-      rel="stylesheet" 
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-    />
-    <link 
-      rel="stylesheet" 
-      type="text/css" 
-      href="{% static 'css/blog.css' %}" 
-    />
-      <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
-
-  <scrip>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        background: #e73c7e;
-        min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
-  
-      .page-wrapper {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-        }
-        
-
-      /* Buttons */
-      .btn-gradient {
-        background: var(--primary-gradient);
-        border: none;
-        color: white;
-        border-radius: 25px;
-        padding: 0.75rem 2rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-      }
-
-      .btn-gradient:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
-        color: white;
-      }
-
-      /* Text Colors */
-      .text-gradient {
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      
-      /* Footer */
-      .modern-footer {
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(15px);
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        padding: 2rem 0;
-        margin-top: auto;
-      }
-
-       /* Responsive Design */
-      @media (max-width: 768px) {
-        .content-card {
-          padding: 1rem;
-          margin-bottom: 1rem;
-        }
-    </script>
-
-    <title>Django Blog{% if title %} - {{ title }}{% endif %}</title>
-  </head>
-
-  <body>
-    <!-- Navbar -->
-    <header class="site-header">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" aria-label="Main navigation">
-        <div class="container">
-          <a class="navbar-brand fw-bold" href="{% url 'traffic:index' %}">SMART-ROUTES</a>
-          <button 
-            class="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="offcanvas" 
-            data-bs-target="#offcanvasNavbar" 
-            aria-controls="offcanvasNavbar" 
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-
-            <div class="offcanvas-body">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" href="{% url 'traffic:index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'blog-home' %}">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'traffic:dashboard' %}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'blog-about' %}">About</a>
-                </li>
-              </ul>
-
-              <!-- Auth Profile Menu -->
-                <ul class="navbar-nav ms-auto">
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-person-circle"></i> <span>Profile</span>
-                    </a>
-                    
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="{% url 'post-create' %}"><i class="bi bi-plus-circle"></i> New Post</a></li>
-                        <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-person"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-                      {% else %}
-                        <li><a class="dropdown-item" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
-                        <li><a class="dropdown-item" href="{% url 'register' %}"><i class="bi bi-person-plus"></i> Sign-up</a></li>
-                      {% endif %}
-                    </ul>
-
-                  </li>
-                </ul>
-              
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-
-
-      <!-- Main Content -->
-      <main role="main" class="container main-content mt-5 pt-4">
-        <div class="row">
-          <div class="col-md-8">
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-dismissible fade show" role="alert">
-                  <i class="bi bi-info-circle"></i> {{ message }}
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% endfor %}
-            {% endif %}
-
-            {% block content %}
-            {% endblock %}
-          </div>
-
-          <!-- Sidebar -->
-          <div class="col-md-4">
-            <div class="sidebar-card">
-              <h3>🚀 Our Sidebar</h3>
-              <p class="text-black-50 mb-3">Discover amazing content and stay updated with the latest posts.</p>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="bi bi-newspaper me-2"></i> Latest Posts
-                </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="bi bi-megaphone me-2"></i> Announcements
-                </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="bi bi-calendar-event me-2"></i> Calendar
-                </li>
-                <li class="list-group-item d-flex align-items-center">
-                  <i class="bi bi-star me-2"></i> Featured
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </main>
-
-
-  <!-- Footer -->
- <footer class="text-center">
-      {% block footer %}
-      {% include "traffic/footer.html" %}
-      {% endblock footer %}
-</footer>  
-
-<!-- Footer -->
-      <footer class="modern-footer text-center">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <p class="mb-2">
-                <span class="text-gradient fw-bold">SMART-ROUTES</span> - 
-                Navigating the future of intelligent transportation
-              </p>
-              <p class="text-black-50 small">
-                © 2025 Smart Routes. Built with ❤️ using Django & Bootstrap
-              </p>
-              <div class="mt-3">
-                <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-github"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-envelope"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-    <!-- Bootstrap Bundle JS -->
-    <script 
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>  {% endcomment %}
