@@ -1,0 +1,504 @@
+{% extends "traffic/traffic-base.html" %}
+{% load static %}
+
+{% block title %}Traffic Monitoring Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container {
+        padding: 20px;
+    }
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        margin-bottom: 20px;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .counter-card {
+        text-align: center;
+        padding: 20px;
+    }
+    .counter-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+    .counter-label {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+    .chart-container {
+        height: 300px;
+        margin-bottom: 20px;
+    }
+    .video-feed {
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .vehicle-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    .vehicle-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .vehicle-item:last-child {
+        border-bottom: none;
+    }
+    .vehicle-type {
+        font-weight: 500;
+    }
+    .vehicle-count {
+        font-weight: bold;
+        color: #007bff;
+    }
+    .alert-box {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        display: none;
+    }
+    #connectionStatus {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    .connected {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .disconnected {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    /* leaflet */
+#map {
+  height: 400px; 
+  width: 100%; 
+  border-radius: 10px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container p-5">
+    <div class="row mb-4 p-5">
+        <div class="col-md-8">
+            <h1>Traffic Monitoring Dashboard</h1>
+        </div>
+        <div class="col-md-4 text-right">
+            <span id="connectionStatus" class="disconnected">Disconnected</span>
+            <button id="reconnectBtn" class="btn btn-sm btn-primary ml-2">Reconnect</button>
+            <button id="resetCountersBtn" class="btn btn-sm btn-danger ml-2">Reset Counters</button>
+        </div>
+    </div>
+
+    <div id="alertBox" class="alert-box">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <span id="alertMessage">Connection lost. Trying to reconnect...</span>
+    </div>
+
+    <div class="row">
+        <!-- Total Vehicle Count -->
+        <div class="col-md-3">
+            <div class="card counter-card">
+                <div class="counter-value" id="totalCount">0</div>
+                <div class="counter-label">Total Vehicles</div>
+            </div>
+        </div>
+        
+        <!-- Car Count -->
+        <div class="col-md-3">
+            <div class="card counter-card">
+                <div class="counter-value" id="carCount">0</div>
+                <div class="counter-label">Cars</div>
+            </div>
+        </div>
+        
+        <!-- Bus Count -->
+        <div class="col-md-3">
+            <div class="card counter-card">
+                <div class="counter-value" id="busCount">0</div>
+                <div class="counter-label">Buses</div>
+            </div>
+        </div>
+        
+        <!-- Truck Count -->
+        <div class="col-md-3">
+            <div class="card counter-card">
+                <div class="counter-value" id="truckCount">0</div>
+                <div class="counter-label">Trucks</div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="row mt-4">
+        <!-- Live Video Feed -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Live Traffic Feed</h5>
+                </div>
+                <div class="card-body p-0">
+                  <div id="videoFeed" class="video-feed">
+                    <img id="streamVideo"  alt="Traffic Stream" height="489" width="640">
+                 </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vehicle Breakdown -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Vehicle Breakdown</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled vehicle-list" id="vehicleList">
+                        <!-- Vehicle items will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Traffic Flow Chart -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Traffic Flow</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="trafficFlowChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vehicle Type Distribution -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Vehicle Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="vehicleDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Recent Detections Table -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Detections</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Vehicle Type</th>
+                                    <th>Direction</th>
+                                    <th>Speed (est.)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detectionTable">
+                                <!-- Detection records will be added dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="traffic-heatmap wrapper">
+                        <div id="traffic-heatmap" style="height: 400px;"></div>
+                    </div>
+                    <div id="trafficRawData" class="text-white">Loading traffic data...</div>
+                    <h5>Note:</h5>
+                    <p>This dashboard provides real-time traffic monitoring and vehicle counting. The data is updated dynamically as vehicles are detected.</p>
+                
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+<script>
+    // Initialize Leaflet map
+    var map = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12); // Lagos, Nigeria
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var heatmapLayer = new HeatmapOverlay({
+        radius: 25,
+        maxOpacity: 0.8,
+        scaleRadius: true,
+        useLocalExtrema: true,
+        latField: 'lat',
+        lngField: 'lng',
+        valueField: 'count'
+    });
+
+    map.addLayer(heatmapLayer);
+
+    function updateHeatmap(data) {
+        heatmapLayer.setData({ max: 50, data: data });
+    }
+
+    // Example Traffic Data (Replace with live data)
+    var trafficRawData = [
+        { lat: 6.5244, lng: 3.3792, count: 10 },  // Green Zone
+        { lat: 6.5270, lng: 3.3805, count: 25 },  // Yellow Zone
+        { lat: 6.5300, lng: 3.3850, count: 40 }   // Red Zone
+    ];
+
+    updateHeatmap(trafficRawData);
+    {% comment %} document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    var heatmapLayer = new HeatmapOverlay({
+        radius: 25,
+        maxOpacity: 0.8,
+        scaleRadius: true,
+        useLocalExtrema: true,
+        latField: 'lat',
+        lngField: 'lng',
+        valueField: 'count'
+    });
+
+    map.addLayer(heatmapLayer);
+
+    // Example data
+    var trafficData = [
+        { lat: 6.5244, lng: 3.3792, count: 10 },
+        { lat: 6.5270, lng: 3.3805, count: 25 },
+        { lat: 6.5300, lng: 3.3850, count: 40 }
+    ];
+
+    heatmapLayer.setData({ max: 50, data: trafficData });
+}); {% endcomment %}
+</script>
+
+
+<script>
+  let socket;
+  let vehicleCounts = {
+      'car': 0,
+      'bus': 0,
+      'truck': 0,
+      'mini-bus': 0,
+      'motorcycle': 0,
+      'okada': 0
+  };
+
+  const trafficData = {
+      labels: [],
+      datasets: [{
+          label: 'Traffic Count',
+          data: [],
+          backgroundColor: 'rgba(0, 123, 255, 0.5)'
+      }]
+  };
+
+  const distributionData = {
+      labels: ['Car', 'Bus', 'Truck', 'Mini-Bus', 'Motorcycle', 'Okada'],
+      datasets: [{
+          data: [0, 0, 0, 0, 0, 0],
+          backgroundColor: [
+              '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8', '#6f42c1'
+          ]
+      }]
+  };
+
+  let trafficFlowChart;
+  let vehicleDistributionChart;
+
+  function initCharts() {
+      const ctx1 = document.getElementById('trafficFlowChart').getContext('2d');
+      trafficFlowChart = new Chart(ctx1, {
+          type: 'line',
+          data: trafficData,
+          options: {
+              responsive: true,
+              scales: {
+                  y: { beginAtZero: true }
+              }
+          }
+      });
+
+      const ctx2 = document.getElementById('vehicleDistributionChart').getContext('2d');
+      vehicleDistributionChart = new Chart(ctx2, {
+          type: 'doughnut',
+          data: distributionData,
+          options: { responsive: true }
+      });
+  }
+
+  function connectWebSocket() {
+      socket = new WebSocket('ws://127.0.0.1:8000/ws/traffic/');
+
+      socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        // i rename data.image to data.resized_img
+        if (data.image) {
+          // Create an image element and set its source to the base64 image data
+          const img = new Image();
+          img.src = 'data:image/jpeg;base64,' + data.image;
+          
+          // Update the video element with the new image
+          const videoElement = document.getElementById("streamVideo");
+          videoElement.src = img.src;
+        }
+      };
+
+      socket.addEventListener('open', function() {
+          console.log('WebSocket Connected');
+          document.getElementById('connectionStatus').textContent = 'Connected';
+          document.getElementById('connectionStatus').classList.remove('disconnected');
+          document.getElementById('connectionStatus').classList.add('connected');
+          document.getElementById('alertBox').style.display = 'none';
+      });
+
+      socket.addEventListener('message', function(event) {
+          const data = JSON.parse(event.data);
+          vehicleCounts[data.vehicle_type] = (vehicleCounts[data.vehicle_type] || 0) + 1;
+
+          const total = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+          document.getElementById('totalCount').textContent = total;
+
+          if (data.vehicle_type === 'car') {
+              document.getElementById('carCount').textContent = vehicleCounts.car;
+          } else if (data.vehicle_type === 'bus') {
+              document.getElementById('busCount').textContent = vehicleCounts.bus;
+          } else if (data.vehicle_type === 'truck') {
+              document.getElementById('truckCount').textContent = vehicleCounts.truck;
+          }
+
+          updateVehicleList();
+
+          const currentTime = new Date().toLocaleTimeString();
+          trafficData.labels.push(currentTime);
+          trafficData.datasets[0].data.push(data.count);
+          if (trafficData.labels.length > 10) {
+              trafficData.labels.shift();
+              trafficData.datasets[0].data.shift();
+          }
+          trafficFlowChart.update();
+
+          const index = distributionData.labels.findIndex(label => label.toLowerCase() === data.vehicle_type);
+          if (index !== -1) {
+              distributionData.datasets[0].data[index]++;
+              vehicleDistributionChart.update();
+          }
+
+          addDetectionToTable(data);
+      });
+
+      socket.addEventListener('close', function() {
+          console.log('WebSocket Disconnected');
+          document.getElementById('connectionStatus').textContent = 'Disconnected';
+          document.getElementById('connectionStatus').classList.remove('connected');
+          document.getElementById('connectionStatus').classList.add('disconnected');
+          document.getElementById('alertBox').style.display = 'block';
+      });
+
+      socket.addEventListener('error', function(error) {
+          console.error('WebSocket Error:', error);
+      });
+  }
+
+  function updateVehicleList() {
+      const list = document.getElementById('vehicleList');
+      list.innerHTML = '';
+      for (const [type, count] of Object.entries(vehicleCounts)) {
+          const item = document.createElement('li');
+          item.className = 'vehicle-item';
+          item.innerHTML = `
+              <span class="vehicle-type">${type.toUpperCase()}</span>
+              <span class="vehicle-count">${count}</span>
+          `;
+          list.appendChild(item);
+      }
+  }
+
+  function addDetectionToTable(data) {
+      const table = document.getElementById('detectionTable');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>${new Date().toLocaleTimeString()}</td>
+          <td>${data.vehicle_type.toUpperCase()}</td> 
+          <td>${data.direction || 'N/A'}</td>
+          <td>${data.speed ? data.speed.toFixed(2) : 'N/A'}</td>
+      `; //  i replace this  <td>${data.vehicle_type.toUpperCase()}</td> with  
+      // <td>${data.vehicle_type ? data.vehicle_type.toUpperCase() : 'UNKNOWN'}</td>  to avoid error
+
+
+      table.prepend(row);
+      if (table.rows.length > 10) {
+          table.deleteRow(10);
+      }
+  }
+
+  document.getElementById('reconnectBtn').addEventListener('click', connectWebSocket);
+  document.getElementById('resetCountersBtn').addEventListener('click', function() {
+      vehicleCounts = {
+          'car': 0,
+          'bus': 0,
+          'truck': 0,
+          'mini-bus': 0,
+          'motorcycle': 0,
+          'okada': 0
+      };
+      document.getElementById('carCount').textContent = 0;
+      document.getElementById('busCount').textContent = 0;
+      document.getElementById('truckCount').textContent = 0;
+      document.getElementById('totalCount').textContent = 0;
+      updateVehicleList();
+      distributionData.datasets[0].data = [0, 0, 0, 0, 0, 0];
+      vehicleDistributionChart.update();
+      trafficData.labels = [];
+      trafficData.datasets[0].data = [];
+      trafficFlowChart.update();
+      document.getElementById('detectionTable').innerHTML = '';
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      connectWebSocket();
+  });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+/* leaflet */
+/* #map {
+  height: 400px; 
+  width: 100%; 
+  border-radius: 10px;
+} */
+
+@media (min-width: 768px) {
+  .news-input {
+      width: 70%;
+  }
+}
+
+.video-clip {
+  width: 100%;
+  max-width: 1920px; /* Ensures it doesn't exceed this width */
+  height: auto;
+  aspect-ratio: 16 / 9; /* Maintains aspect ratio */
+}
+
+/* Large screens (1280px and above) */
+@media (min-width: 1280px) {
+  .video-clip {
+    width: 1920px;
+    height: 768px;
+  }
+}
+
+/* Medium screens (960px - 1279px) */
+@media (min-width: 960px) and (max-width: 1279px) {
+  .video-clip {
+    width: 1248px;
+    height: 702px;
+  }
+}
+
+/* Small screens (below 960px) */
+@media (max-width: 959px) {
+  .video-clip {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* traffic-info section */
+.text-long p {
+  text-align: justify;
+}
+
+.bg-blue {
+  /* If you still want a blue overlay, you can set a background color */
+  background-color: #007BFF; 
+  background-image: url('{% static "img/img1.jpg" %}');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

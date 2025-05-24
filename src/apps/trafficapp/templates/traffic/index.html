@@ -1,0 +1,991 @@
+{% extends "traffic/traffic-base.html" %}
+{% load static %}
+
+{% block content %}
+  <!-- Hero Section with improved layout and more engaging design -->
+  <section class="bg-gradient-to-bottom from-dark to-primary py-5 text-light">
+    <div class="container p-5">
+      <div class="row align-items-center">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+          <h1 class="display-4 fw-bold">Stay Ahead of Traffic <span class="text-warning">Your Ultimate SMART-ROUTE Alert Companion</span></h1>
+          <p class="lead my-4">
+            In today's fast-paced world, time is a valuable asset, and no one 
+            likes being stuck in traffic. Whether you're commuting to work, heading to an important meeting,
+            or simply running errands, unexpected road congestion can cause delays and frustration.
+            That's where our Traffic Alert Website comes in—providing you with real-time updates, 
+            road conditions, and smart route suggestions to help you navigate the city efficiently.
+          </p>
+          <div class="d-flex gap-3 mt-4">
+            <button class="btn btn-warning btn-lg shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#contact-us">
+              <i class="bi bi-chat-dots-fill me-2"></i>Contact Us
+            </button>
+            <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+          </div>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="position-relative">
+            <img src="{% static 'img/hero.png' %}" class="img-fluid rounded shadow-lg" alt="Trip Image">
+            <div class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning p-3 shadow">
+              <i class="bi bi-clock-history fs-4"></i>
+              <span class="visually-hidden">Real-time updates</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Section with overlay and caption -->
+  <section class="bg-dark position-relative">
+    <div class="container-fluid p-0">
+      <div class="ratio ratio-21x9">
+        <video autoplay muted loop playsinline class="object-fit-cover">
+          <source src="{% static 'img/Heavytraffic.mp4' %}" type="video/mp4">
+        </video>
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center">
+          <div class="text-center text-light p-4">
+            <h2 class="display-5 fw-bold mb-3">Experience Real-Time Traffic Updates</h2>
+            <p class="lead mb-4">Stay informed with live traffic conditions around the city</p>
+            <a href="#features" class="btn btn-outline-light btn-lg px-4">
+              <i class="bi bi-arrow-down-circle me-2"></i>Discover Our Features
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section with improved form layout -->
+  <section class="bg-primary text-light py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+          <h2 class="mb-3">
+            Subscribe to Our <span class="text-warning fw-bold">Newsletter</span>
+          </h2>
+          <p class="lead mb-4">
+            Stay up-to-date with the latest traffic news, updates, and special offers.
+          </p>
+          
+          <form class="row g-3 justify-content-center">
+            <div class="col-md-8">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-envelope-fill text-primary"></i>
+                </span>
+                <input type="email" class="form-control form-control-lg" placeholder="Enter your email address" aria-label="Email" required>
+                <button type="submit" class="btn btn-warning btn-lg fw-bold">
+                  Subscribe <i class="bi bi-send-fill ms-2"></i>
+                </button>
+              </div>
+              <div class="form-text text-light mt-2">We respect your privacy and will never share your information.</div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section with enhanced cards -->
+  <section class="py-5" id="features">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold">What We Offer</h2>
+        <div class="divider-custom mx-auto my-3">
+          <div class="divider-custom-line bg-primary"></div>
+          <div class="divider-custom-icon"><i class="bi bi-car-front-fill text-primary"></i></div>
+          <div class="divider-custom-line bg-primary"></div>
+        </div>
+        <p class="lead text-muted">Comprehensive traffic solutions to make your journey smoother</p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Feature 1 -->
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm hover-scale">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-4 mx-auto">
+                <i class="bi bi-graph-up fs-2 p-3"></i>
+              </div>
+              <h3 class="card-title h4 mb-3">Live Traffic Updates</h3>
+              <p class="card-text text-muted">
+                Get real-time reports on congestion, accidents, and roadblocks to plan your journey accordingly.
+              </p>
+              <div class="mt-4">
+                <a href="#" class="btn btn-outline-primary">Learn More <i class="bi bi-arrow-right ms-2"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm hover-scale">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-warning bg-gradient text-dark rounded-circle mb-4 mx-auto">
+                <i class="bi bi-map fs-2 p-3"></i>
+              </div>
+              <h3 class="card-title h4 mb-3">Interactive Maps & Heatmaps</h3>
+              <p class="card-text text-muted">
+                Visualize real-time traffic density to avoid busy areas and find the fastest routes to your destination.
+              </p>
+              <div class="mt-4">
+                <a href="#" class="btn btn-outline-primary">Learn More <i class="bi bi-arrow-right ms-2"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="col-md-4">
+          <div class="card h-100 border-0 shadow-sm hover-scale">
+            <div class="card-body text-center p-4">
+              <div class="feature-icon bg-primary bg-gradient text-white rounded-circle mb-4 mx-auto">
+                <i class="bi bi-camera-video fs-2 p-3"></i>
+              </div>
+              <h3 class="card-title h4 mb-3">Live Camera Feeds</h3>
+              <p class="card-text text-muted">
+                See current road conditions through connected traffic cameras to make informed travel decisions.
+              </p>
+              <div class="mt-4">
+                <a href="#" class="btn btn-outline-primary">Learn More <i class="bi bi-arrow-right ms-2"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Traffic Alerts Matter Section with enhanced visuals -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="position-relative">
+            <img src="{% static 'img/traffic.jpg' %}" alt="Traffic" class="img-fluid rounded-3 shadow">
+            <div class="position-absolute top-0 end-0 translate-middle-x p-3 bg-warning rounded-3 shadow-sm">
+              <i class="bi bi-exclamation-triangle fs-1 text-dark"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <h2 class="display-6 fw-bold mb-4 text-black">Why Traffic Alerts Matter</h2>
+          <div class="mb-4 border-start border-4 border-primary ps-4">
+            <p class="lead text-muted">
+              Traffic congestion isn't just an inconvenience; it affects productivity, 
+              fuel consumption, and even road safety. By staying informed about road closures, 
+              accidents, weather conditions, and alternative routes, drivers can save time, 
+              reduce stress, and make smarter travel decisions.
+            </p>
+          </div>
+          <p class="text-muted">
+            Our platform ensures that you are always one step ahead, helping you reach your destination 
+            safely and efficiently.
+          </p>
+          <div class="d-flex gap-2 mt-4">
+            <a href="#" class="btn btn-primary">
+              <i class="bi bi-info-circle me-2"></i>Learn More
+            </a>
+            <a href="#" class="btn btn-outline-secondary">
+              <i class="bi bi-play-circle me-2"></i>Watch Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section with timeline -->
+  <section class="py-5 bg-dark text-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+          <h2 class="display-6 fw-bold mb-4">How It Works</h2>
+          
+          <div class="timeline">
+            <div class="timeline-item mb-4 ps-4 border-start border-warning">
+              <span class="badge bg-warning text-dark px-3 py-2 mb-2">Step 1</span>
+              <h4>Data Collection</h4>
+              <p class="text-light-emphasis">
+                Our system gathers traffic data from multiple sources, including CCTV cameras, 
+                GPS tracking, and user-reported incidents.
+              </p>
+            </div>
+            
+            <div class="timeline-item mb-4 ps-4 border-start border-warning">
+              <span class="badge bg-warning text-dark px-3 py-2 mb-2">Step 2</span>
+              <h4>AI Analysis</h4>
+              <p class="text-light-emphasis">
+                With the help of advanced AI algorithms, we analyze and predict traffic patterns 
+                to provide the most accurate information.
+              </p>
+            </div>
+            
+            <div class="timeline-item ps-4 border-start border-warning">
+              <span class="badge bg-warning text-dark px-3 py-2 mb-2">Step 3</span>
+              <h4>Community Reports</h4>
+              <p class="text-light-emphasis">
+                Users can report incidents such as accidents, roadblocks, and hazards, 
+                making the system more dynamic and reliable.
+              </p>
+            </div>
+          </div>
+          
+          <a href="#" class="btn btn-warning mt-4">
+            <i class="bi bi-arrow-right-circle me-2"></i>Read More
+          </a>
+        </div>
+        <div class="col-lg-7">
+          <div class="position-relative">
+            <img src="{% static 'img/img4.jpg' %}" alt="Traffic Analysis" class="img-fluid rounded-3 shadow">
+            <div class="position-absolute top-100 start-50 translate-middle bg-warning text-dark p-3 rounded-circle shadow">
+              <i class="bi bi-lightning-charge-fill fs-1"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section with improved accordion -->
+  <section class="py-5" id="questions">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-6 fw-bold">Frequently Asked Questions</h2>
+        <div class="divider-custom mx-auto my-3">
+          <div class="divider-custom-line bg-primary"></div>
+          <div class="divider-custom-icon"><i class="bi bi-question-circle-fill text-primary"></i></div>
+          <div class="divider-custom-line bg-primary"></div>
+        </div>
+        <p class="lead text-muted">Find answers to common questions about our traffic alert service</p>
+      </div>
+      
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="accordion accordion-flush shadow-sm" id="questions">
+            <!-- FAQ Item 1 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#question-one">
+                  <i class="bi bi-person-plus me-2 text-primary"></i> How do I sign up?
+                </button>
+              </h2>
+              <div id="question-one" class="accordion-collapse collapse show" data-bs-parent="#questions">
+                <div class="accordion-body">
+                  Signing up is easy! Click the "Register" button in the top navigation bar and follow the simple steps to create your account. 
+                  You'll need to provide a valid email address and create a password. Once registered, you can customize your profile and set 
+                  up your notification preferences.
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item 2 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#question-two">
+                  <i class="bi bi-cash-coin me-2 text-primary"></i> How much does it cost to use the service?
+                </button>
+              </h2>
+              <div id="question-two" class="accordion-collapse collapse" data-bs-parent="#questions">
+                <div class="accordion-body">
+                  We offer a free basic plan that includes access to traffic updates and limited map features. For premium features such as 
+                  personalized alerts, ad-free experience, and route planning, we offer affordable subscription plans starting at $4.99/month. 
+                  Visit our pricing page for more details on plan options and features.
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#question-three">
+                  <i class="bi bi-info-circle me-2 text-primary"></i> What do I need to know to get started?
+                </button>
+              </h2>
+              <div id="question-three" class="accordion-collapse collapse" data-bs-parent="#questions">
+                <div class="accordion-body">
+                  To get the most out of our traffic alert service, you'll need to enable location services on your device and set up your 
+                  common routes in your profile. This helps us provide you with relevant alerts for your daily commute. You can also customize 
+                  notification settings to receive alerts via push notifications, email, or SMS.
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item 4 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#question-four">
+                  <i class="bi bi-geo-alt me-2 text-primary"></i> Where exactly are you located?
+                </button>
+              </h2>
+              <div id="question-four" class="accordion-collapse collapse" data-bs-parent="#questions">
+                <div class="accordion-body">
+                  Our main office is located at the School of Transport and Logistics, LASU Main Campus, Ojo, Lagos. 
+                  We also have satellite offices in key locations around the city to monitor traffic conditions. 
+                  Our service coverage extends throughout Lagos metropolitan area, with plans to expand to other major cities soon.
+                </div>
+              </div>
+            </div>
+            
+            <!-- FAQ Item 5 -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#question-five">
+                  <i class="bi bi-briefcase me-2 text-primary"></i> How can I integrate this with my business?
+                </button>
+              </h2>
+              <div id="question-five" class="accordion-collapse collapse" data-bs-parent="#questions">
+                <div class="accordion-body">
+                  We offer API integration for businesses that want to incorporate our traffic data into their own applications or services. 
+                  We have special plans for delivery companies, ride-sharing services, and fleet management businesses. Contact our business 
+                  development team for custom solutions tailored to your specific needs.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section with improved cards -->
+  <section id="agencies" class="py-5 bg-primary">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-6 fw-bold text-white">Lagos State Traffic Management Agencies</h2>
+        <p class="lead text-white-50 mb-0">
+          Our agencies have over 5 years of experience managing traffic in the industry
+        </p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Team Member 1 -->
+        <div class="col-md-3">
+          <div class="card border-0 h-100 shadow team-card">
+            <div class="card-body p-4 text-center">
+              <div class="position-relative mb-4 team-image-wrapper">
+                <img src="{% static 'img/prof-charles.jpeg' %}" class="rounded-circle team-image shadow border border-4 border-white" alt="Professor Charles">
+                <span class="position-absolute bottom-0 end-0 bg-success p-2 rounded-circle">
+                  <i class="bi bi-check-lg text-white"></i>
+                </span>
+              </div>
+              <h5 class="card-title mb-1">Professor Charles</h5>
+              <p class="text-muted small mb-2">Lagos State University</p>
+              <p class="card-text text-muted">
+                Prof. Charles Asenime is a professor of urban and region/transport planning, and Dean, School of Transport and Logistics...
+              </p>
+              <div class="social-icons d-flex justify-content-center gap-2 mt-3">
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Member 2 -->
+        <div class="col-md-3">
+          <div class="card border-0 h-100 shadow team-card">
+            <div class="card-body p-4 text-center">
+              <div class="position-relative mb-4 team-image-wrapper">
+                <img src="https://randomuser.me/api/portraits/women/1.jpg" class="rounded-circle team-image shadow border border-4 border-white" alt="West Tom">
+                <span class="position-absolute bottom-0 end-0 bg-success p-2 rounded-circle">
+                  <i class="bi bi-check-lg text-white"></i>
+                </span>
+              </div>
+              <h5 class="card-title mb-1">West Tom</h5>
+              <p class="text-muted small mb-2">LASTMA</p>
+              <p class="card-text text-muted">
+                With over 10 years of experience in traffic management, West Tom leads our coordination efforts with local transportation authorities.
+              </p>
+              <div class="social-icons d-flex justify-content-center gap-2 mt-3">
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Member 3 -->
+        <div class="col-md-3">
+          <div class="card border-0 h-100 shadow team-card">
+            <div class="card-body p-4 text-center">
+              <div class="position-relative mb-4 team-image-wrapper">
+                <img src="https://randomuser.me/api/portraits/men/1.jpg" class="rounded-circle team-image shadow border border-4 border-white" alt="Fosen Ibrahim">
+                <span class="position-absolute bottom-0 end-0 bg-success p-2 rounded-circle">
+                  <i class="bi bi-check-lg text-white"></i>
+                </span>
+              </div>
+              <h5 class="card-title mb-1">Fosen Ibrahim, PhD</h5>
+              <p class="text-muted small mb-2">Lagos State University</p>
+              <p class="card-text text-muted">
+                Dr. Ibrahim specializes in urban mobility research and contributes valuable insights to our traffic prediction algorithms.
+              </p>
+              <div class="social-icons d-flex justify-content-center gap-2 mt-3">
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Team Member 4 -->
+        <div class="col-md-3">
+          <div class="card border-0 h-100 shadow team-card">
+            <div class="card-body p-4 text-center">
+              <div class="position-relative mb-4 team-image-wrapper">
+                <img src="https://randomuser.me/api/portraits/women/4.jpg" class="rounded-circle team-image shadow border border-4 border-white" alt="Jane Mat">
+                <span class="position-absolute bottom-0 end-0 bg-success p-2 rounded-circle">
+                  <i class="bi bi-check-lg text-white"></i>
+                </span>
+              </div>
+              <h5 class="card-title mb-1">Jane Mat</h5>
+              <p class="text-muted small mb-2">FRSC</p>
+              <p class="card-text text-muted">
+                With expertise in road safety and emergency response, Jane helps integrate critical safety alerts into our platform.
+              </p>
+              <div class="social-icons d-flex justify-content-center gap-2 mt-3">
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-icon bg-light text-primary rounded-circle p-2"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section with improved layout -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5 mb-4 mb-lg-0">
+          <div class="position-relative">
+            <img src="{% static 'img/img5.svg' %}" alt="Benefits" class="img-fluid">
+            <div class="position-absolute top-0 start-0 translate-middle p-3 bg-primary text-white rounded-circle shadow">
+              <i class="bi bi-people-fill fs-3"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <h2 class="display-6 fw-bold mb-4 text-black">Who Can Benefit?</h2>
+          
+          <div class="benefit-list">
+            <div class="d-flex align-items-start mb-4">
+              <div class="flex-shrink-0 bg-primary text-white rounded-circle p-3 me-3">
+                <i class="bi bi-person-badge"></i>
+              </div>
+              <div>
+                <h4>Daily Commuters</h4>
+                <p class="text-muted">
+                  Plan routes more efficiently, avoiding unnecessary delays and reaching destinations faster.
+                </p>
+              </div>
+            </div>
+            
+            <div class="d-flex align-items-start mb-4">
+              <div class="flex-shrink-0 bg-primary text-white rounded-circle p-3 me-3">
+                <i class="bi bi-truck"></i>
+              </div>
+              <div>
+                <h4>Delivery Drivers</h4>
+                <p class="text-muted">
+                  Maximize earnings by staying informed about real-time traffic conditions, avoiding congested areas.
+                </p>
+              </div>
+            </div>
+            
+            <div class="d-flex align-items-start mb-4">
+              <div class="flex-shrink-0 bg-primary text-white rounded-circle p-3 me-3">
+                <i class="bi bi-lightning"></i>
+              </div>
+              <div>
+                <h4>Emergency Services</h4>
+                <p class="text-muted">
+                  Rely on instant traffic updates to determine the fastest routes for urgent responses.
+                </p>
+              </div>
+            </div>
+            
+            <div class="d-flex align-items-start">
+              <div class="flex-shrink-0 bg-primary text-white rounded-circle p-3 me-3">
+                <i class="bi bi-building"></i>
+              </div>
+              <div>
+                <h4>Logistics Companies</h4>
+                <p class="text-muted">
+                  Enhance delivery efficiency by adjusting routes based on live traffic data, reducing costs.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <a href="#" class="btn btn-primary me-2">
+              <i class="bi bi-arrow-right me-2"></i>Learn More
+            </a>
+            <a href="#" class="btn btn-outline-secondary">
+              <i class="bi bi-star me-2"></i>View Success Stories
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Control Journey Section with improved design -->
+  <section class="py-5 bg-dark text-light">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="display-6 fw-bold mb-4">Stay in Control of Your Journey</h2>
+          
+          <div class="mb-4 p-3 bg-opacity-10 bg-light rounded-3 border-start border-4 border-warning">
+            <p class="lead mb-0">
+              Our system gathers traffic data from multiple sources, including CCTV cameras, 
+              GPS tracking, and user-reported incidents through the blog section.
+            </p>
+          </div>
+          
+          <div class="d-flex align-items-center mb-4">
+            <div class="fs-1 me-3 text-warning">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div class="fs-4 fw-bold">
+              Plan ahead. Stay informed. Travel smarter.
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <a href="#" class="btn btn-warning me-2">
+              <i class="bi bi-map me-2"></i>Try it Now
+            </a>
+            <a href="#" class="btn btn-outline-light">
+              <i class="bi bi-info-circle me-2"></i>Learn More
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="position-relative">
+            <img src="{% static 'img/img7.svg' %}" alt="Control your journey" class="img-fluid">
+            <div class="position-absolute top-100 start-0 translate-middle bg-warning text-dark p-3 rounded-circle shadow-lg">
+              <i class="bi bi-controller fs-3"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location & Map Section with improved layout -->
+ 
+  <!-- Location & Map Section with improved layout -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="display-6 fw-bold text-black">Find Us</h2>
+        <div class="divider-custom mx-auto my-3">
+          <div class="divider-custom-line bg-primary"></div>
+          <div class="divider-custom-icon"><i class="bi bi-geo-alt-fill text-primary"></i></div>
+          <div class="divider-custom-line bg-primary"></div>
+        </div>
+        <p class="lead text-muted">Visit our office or reach out through various channels</p>
+      </div>
+      
+      <div class="row g-4 align-items-stretch">
+        <!-- Location Information Column -->
+        <div class="col-lg-5">
+          <div class="card border-0 h-100 shadow-sm">
+            <div class="card-body p-4">
+              <h4 class="border-bottom pb-3 mb-4"><i class="bi bi-building me-2 text-primary"></i>Contact Information</h4>
+              
+              <div class="d-flex align-items-start mb-4">
+                <div class="bg-primary rounded-circle p-2 me-3 text-white fs-5">
+                  <i class="bi bi-house-fill"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1">Office</h5>
+                  <p class="text-muted mb-0">School of Transport and Logistics</p>
+                </div>
+              </div>
+              
+              <div class="d-flex align-items-start mb-4">
+                <div class="bg-primary rounded-circle p-2 me-3 text-white fs-5">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1">Address</h5>
+                  <p class="text-muted mb-0">LASU Main Campus, Ojo, Lagos</p>
+                </div>
+              </div>
+              
+              <div class="d-flex align-items-start mb-4">
+                <div class="bg-primary rounded-circle p-2 me-3 text-white fs-5">
+                  <i class="bi bi-phone-fill"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1">Phone</h5>
+                  <p class="text-muted mb-0">(123) 456-7890</p>
+                </div>
+              </div>
+              
+              <div class="d-flex align-items-start mb-4">
+                <div class="bg-primary rounded-circle p-2 me-3 text-white fs-5">
+                  <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1">Email</h5>
+                  <p class="text-muted mb-0">support@sot.com</p>
+                </div>
+              </div>
+              
+              <div class="d-flex align-items-start">
+                <div class="bg-primary rounded-circle p-2 me-3 text-white fs-5">
+                  <i class="bi bi-globe"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1">Website</h5>
+                  <p class="text-muted mb-0">www.sot.edu.ng</p>
+                </div>
+              </div>
+              
+              <div class="mt-4">
+                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#contact-us">
+                  <i class="bi bi-chat-dots-fill me-2"></i>Send us a message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Map Column -->
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-2">
+              <div id="map" class="rounded-3 w-100 h-100" style="min-height: 450px;">
+                <!-- Leaflet map will be loaded here -->
+              </div>
+            </div>
+            <div class="card-footer bg-white border-0 p-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="text-muted mb-0"><i class="bi bi-info-circle me-2"></i>Click on the map for directions</p>
+                <a href="#" class="btn btn-sm btn-outline-primary">View Larger Map</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action & Discover Section with improved layout -->
+  <section class="py-5 bg-gradient-to-right from-dark to-primary text-light">
+    <div class="container">
+      <!-- CTA Button -->
+      <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold mb-4">Ready to Beat Traffic Forever?</h2>
+        <p class="lead mb-4 mx-auto" style="max-width: 700px;">
+          Join thousands of commuters who have transformed their daily travel experience with our traffic alert service.
+        </p>
+        <button class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow" data-bs-toggle="modal" data-bs-target="#contact-us">
+          <i class="bi bi-person-plus-fill me-2"></i>Get Started Now
+        </button>
+      </div>
+      
+      <!-- Discover More Section -->
+      <div class="mt-5 pt-5 border-top border-light border-opacity-25">
+        <div class="text-center mb-5">
+          <h2 class="display-6 fw-bold">Discover More</h2>
+          <p class="lead text-light-emphasis">Explore additional resources and opportunities</p>
+        </div>
+        
+        <div class="row g-4">
+          <!-- Discover Col 1 -->
+          <div class="col-md-4">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100 shadow hover-lift">
+              <div class="card-body p-4">
+                <h3 class="text-warning mb-3">Join the SMART-ROUTE platform</h3>
+                <p class="text-light-emphasis mb-4">
+                  Start building customizable maps and spatial intelligence content using your own data. Find
+                  out how our flexible and open platform can help expand your business offers and services.
+                </p>
+                <div class="mt-auto">
+                  <a href="{% url 'register' %}" class="btn btn-outline-warning">
+                    <span>Sign up now</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Discover Col 2 -->
+          <div class="col-md-4">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100 shadow hover-lift">
+              <div class="card-body p-4">
+                <h3 class="text-warning mb-3">Contact our sales team</h3>
+                <p class="text-light-emphasis mb-4">
+                  If you have any questions or would like to find out more about how ZUMERHUB location 
+                  technology can support your business, get in touch with our global sales team.
+                </p>
+                <div class="mt-auto">
+                  <a href="#" class="btn btn-outline-warning">
+                    <span>Talk to sales</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Discover Col 3 -->
+          <div class="col-md-4">
+            <div class="card bg-dark bg-opacity-50 border-0 h-100 shadow hover-lift">
+              <div class="card-body p-4">
+                <h3 class="text-warning mb-3">Partner with ZUMERHUB</h3>
+                <p class="text-light-emphasis mb-4">
+                  Join our global alliance of partners and find out how location technology can help meet 
+                  your organization's needs and support you in building more efficient, effective solutions.
+                </p>
+                <div class="mt-auto">
+                  <a href="#" class="btn btn-outline-warning">
+                    <span>Become a partner</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Modal with enhanced design -->
+  <div class="modal fade" id="contact-us" tabindex="-1" aria-labelledby="contact-usLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fs-4" id="contact-usLabel">
+            <i class="bi bi-chat-dots me-2"></i>Get in Touch
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="lead mb-4">We'd love to hear from you! Fill out the form below and our team will get back to you shortly.</p>
+          
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                  <input type="tel" class="form-control" id="phone" placeholder="(123) 456-7890" required>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <label for="subject" class="form-label">Subject</label>
+                <select class="form-select" id="subject">
+                  <option selected>Choose a subject...</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="support">Technical Support</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="business">Business Opportunity</option>
+                </select>
+              </div>
+              
+              <div class="col-12">
+                <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="message" rows="4" placeholder="How can we help you?" required></textarea>
+              </div>
+              
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="newsletter">
+                  <label class="form-check-label" for="newsletter">
+                    Subscribe to our newsletter for updates
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-2"></i>Close
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send me-2"></i>Submit Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom CSS to add to your stylesheet -->
+  <style>
+    /* Hero gradient */
+    .bg-gradient-to-bottom {
+      background: linear-gradient(180deg, #212529 0%, #0d6efd 100%);
+    }
+    
+    .bg-gradient-to-right {
+      background: linear-gradient(90deg, #212529 0%, #0d6efd 100%);
+    }
+    
+    /* Feature icon styling */
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+    }
+    
+    /* Custom divider */
+    .divider-custom {
+      width: 100%;
+      max-width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .divider-custom-line {
+      width: 100%;
+      max-width: 70px;
+      height: 4px;
+      border-radius: 2px;
+    }
+    
+    .divider-custom-icon {
+      margin: 0 1rem;
+      font-size: 1.5rem;
+    }
+    
+    /* Team member styling */
+    .team-image-wrapper {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto;
+    }
+    
+    .team-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+    
+    .social-icon {
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+    
+    .social-icon:hover {
+      transform: translateY(-3px);
+      background-color: var(--bs-primary) !important;
+      color: #fff !important;
+    }
+    
+    /* Hover effects */
+    .hover-scale {
+      transition: transform 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+      transform: scale(1.03);
+    }
+    
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Custom text emphasis for dark backgrounds */
+    .text-light-emphasis {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+  </style>
+
+  <!-- Add this JavaScript to your script file -->
+  <script>
+    // Initialize the map (if using leaflet)
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if map element exists
+      const mapElement = document.getElementById('map');
+      if (mapElement && typeof L !== 'undefined') {
+        // Lagos coordinates
+        const map = L.map('map').setView([6.5244, 3.3792], 13);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Add marker for office location
+        L.marker([6.5244, 3.3792]).addTo(map)
+          .bindPopup('<strong>School of Transport and Logistics</strong><br>LASU Main Campus, Ojo, Lagos')
+          .openPopup();
+      }
+    });
+    
+    // Add animation for sections
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate__animated', 'animate__fadeIn');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block footer %}
+{% include "traffic/footer.html" %}
+{% endblock footer %}
