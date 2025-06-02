@@ -86,6 +86,21 @@
   width: 100%; 
   border-radius: 10px;
 }
+
+.video-container {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+}
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-card {
+    margin-bottom: 10px;
+  }
+}
+
 </style>
 {% endblock %}
 
@@ -172,6 +187,16 @@
         </div>
     </div>
 
+   
+       <!-- Contact USER Feedback Form  -->
+    <div>   <a href="https://docs.google.com/forms/d/e/1FAIpQLSelJoym4mRQNVShIkrZQ_dLSY8g8_bQKmTCJ0ANfbnu8ssXqQ/viewform"
+        target="_blank"
+        class="btn btn-primary">
+        <i class="bi bi-chat-dots me-2"></i>User Feedback
+        </a>
+    </div>
+
+
     <div class="row mt-4">
         <!-- Traffic Flow Chart -->
         <div class="col-md-6">
@@ -202,6 +227,8 @@
         </div>
     </div>
 
+  
+
     <div class="row mt-4">
         <!-- Recent Detections Table -->
         <div class="col-12">
@@ -230,7 +257,7 @@
         </div>
     </div>
 
-    <div class="row mt-4">
+    {% comment %} <div class="row mt-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -241,19 +268,43 @@
                     <h5>Note:</h5>
                     <p>This dashboard provides real-time traffic monitoring and vehicle counting. The data is updated dynamically as vehicles are detected.</p>
                 
+                </div>
+            </div>
+        </div>
+    </div>  {% endcomment %}
+
+
+
+
+ <div class="container-fluid p-4">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="traffic-heatmap wrapper">
+                            <div id="traffic-heatmap" style="height: 400px;"></div>
+                        </div>
+                        <div id="trafficRawData" class="text-white">Loading traffic data...</div>
+                        <h5>Note:</h5>
+                        <p>This dashboard provides real-time traffic monitoring and vehicle counting. The data is updated dynamically as vehicles are detected.</p>
                     </div>
+                </div>
             </div>
         </div>
     </div>
-    
-</div>
+
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    
+    <!-- Heatmap.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.2/heatmap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-heatmap/1.0.0/leaflet-heatmap.js"></script>
 
-<script>
+{% comment %} <script>
     // Initialize Leaflet map
     var map = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12); // Lagos, Nigeria
 
@@ -283,7 +334,7 @@
     ];
 
     updateHeatmap(trafficRawData);
-    {% comment %} document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
     var map = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -308,19 +359,903 @@
     ];
 
     heatmapLayer.setData({ max: 50, data: trafficData });
-}); {% endcomment %}
-</script>
+}); 
+</script> {% endcomment %}
 
 
 <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if map container exists
+            const mapContainer = document.getElementById('traffic-heatmap');
+            if (!mapContainer) {
+                console.error('Map container not found!');
+                return;
+            }
+
+            // Clear any existing map instance
+            if (window.trafficMap) {
+                window.trafficMap.remove();
+            }
+
+            try {
+                // Initialize Leaflet map
+                window.trafficMap = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12); // Lagos, Nigeria
+
+                // Add tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(window.trafficMap);
+
+                // Initialize heatmap layer
+                var heatmapLayer = new HeatmapOverlay({
+                    radius: 25,
+                    maxOpacity: 0.8,
+                    scaleRadius: true,
+                    useLocalExtrema: true,
+                    latField: 'lat',
+                    lngField: 'lng',
+                    valueField: 'count'
+                });
+
+                // Add heatmap layer to map
+                window.trafficMap.addLayer(heatmapLayer);
+
+                // Function to update heatmap
+                function updateHeatmap(data) {
+                    heatmapLayer.setData({ max: 50, data: data });
+                    
+                    // Update raw data display
+                    const rawDataElement = document.getElementById('trafficRawData');
+                    if (rawDataElement) {
+                        rawDataElement.innerHTML = `
+                            <strong>Live Traffic Data Points:</strong><br>
+                            ${data.map(point => 
+                                `Lat: ${point.lat}, Lng: ${point.lng}, Traffic Level: ${point.count}`
+                            ).join('<br>')}
+                            <br><br><strong>Last Updated:</strong> ${new Date().toLocaleString()}
+                        `;
+                    }
+                }
+
+                // Example Traffic Data for Lagos, Nigeria
+                var trafficRawData = [
+                    { lat: 6.5244, lng: 3.3792, count: 10 },  // Victoria Island - Light Traffic
+                    { lat: 6.5270, lng: 3.3805, count: 25 },  // Lagos Island - Moderate Traffic
+                    { lat: 6.5300, lng: 3.3850, count: 40 },  // Ikoyi - Heavy Traffic
+                    { lat: 6.4585, lng: 3.3900, count: 35 },  // Surulere - Heavy Traffic  
+                    { lat: 6.5200, lng: 3.3600, count: 20 },  // Marina - Moderate Traffic
+                    { lat: 6.6018, lng: 3.3515, count: 30 },  // Ikeja - Heavy Traffic
+                    { lat: 6.5795, lng: 3.3211, count: 15 },  // Maryland - Light Traffic
+                    { lat: 6.4698, lng: 3.5852, count: 28 },  // Lekki - Moderate Traffic
+                    { lat: 6.5244, lng: 3.4000, count: 45 },  // Third Mainland Bridge - Very Heavy
+                    { lat: 6.5355, lng: 3.3087, count: 22 }   // Apapa - Moderate Traffic
+                ];
+
+                // Initial heatmap update
+                updateHeatmap(trafficRawData);
+
+                // Simulate live data updates every 5 seconds
+                setInterval(function() {
+                    // Simulate changing traffic conditions
+                    var updatedData = trafficRawData.map(function(point) {
+                        return {
+                            lat: point.lat,
+                            lng: point.lng,
+                            count: Math.max(5, Math.min(50, point.count + (Math.random() - 0.5) * 10))
+                        };
+                    });
+                    
+                    updateHeatmap(updatedData);
+                    trafficRawData = updatedData; // Update reference data
+                }, 5000);
+
+                // Add some markers for reference
+                var locations = [
+                    { name: "Victoria Island", lat: 6.5244, lng: 3.3792 },
+                    { name: "Lagos Island", lat: 6.5270, lng: 3.3805 },
+                    { name: "Ikoyi", lat: 6.5300, lng: 3.3850 },
+                    { name: "Ikeja", lat: 6.6018, lng: 3.3515 },
+                    { name: "Lekki", lat: 6.4698, lng: 3.5852 }
+                ];
+
+                locations.forEach(function(location) {
+                    L.marker([location.lat, location.lng])
+                        .addTo(window.trafficMap)
+                        .bindPopup(`<b>${location.name}</b><br>Lagos Traffic Monitor`);
+                });
+
+                console.log('Traffic heatmap initialized successfully');
+
+            } catch (error) {
+                console.error('Error initializing map:', error);
+                document.getElementById('trafficRawData').innerHTML = 
+                    `<span style="color: #e74c3c;">Error loading map: ${error.message}</span>`;
+            }
+        });
+</script>
+
+
+
+{% comment %}
+<script>
+    // Main Dashboard JavaScript - Consolidated and Fixed
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all components when DOM is ready
+        initializeCharts();
+        initializeWebSocket();
+        initializeFeedbackModal();
+        initializeTrafficMap();
+        
+        // Start periodic updates for the video feed
+        setInterval(function() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                    action: "get_update"
+                }));
+            }
+        }, 1000);
+    });
+
+    // Global variables
+    let socket;
+    let vehicleCounts = {
+        'car': 0,
+        'bus': 0,
+        'truck': 0,
+        'mini-bus': 0,
+        'motorcycle': 0
+    };
+
+    const trafficData = {
+        labels: [],
+        datasets: [{
+            label: 'Traffic Count',
+            data: [],
+            backgroundColor: 'rgba(0, 123, 255, 0.5)'
+        }]
+    };
+
+    const distributionData = {
+        labels: ['Car', 'Bus', 'Truck', 'Mini-Bus', 'Motorcycle'],
+        datasets: [{
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: [
+                '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8'
+            ]
+        }]
+    };
+
+    let trafficFlowChart;
+    let vehicleDistributionChart;
+
+    // Initialize Charts
+    function initializeCharts() {
+        try {
+            const ctx1 = document.getElementById('trafficFlowChart');
+            const ctx2 = document.getElementById('vehicleDistributionChart');
+            
+            if (!ctx1 || !ctx2) {
+                console.error('Chart canvases not found');
+                return;
+            }
+
+            trafficFlowChart = new Chart(ctx1.getContext('2d'), {
+                type: 'line',
+                data: trafficData,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    animation: {
+                        duration: 300
+                    }
+                }
+            });
+
+            vehicleDistributionChart = new Chart(ctx2.getContext('2d'), {
+                type: 'doughnut',
+                data: distributionData,
+                options: { 
+                    responsive: true,
+                    animation: {
+                        duration: 300
+                    }
+                }
+            });
+            
+            console.log('Charts initialized successfully');
+        } catch (error) {
+            console.error('Error initializing charts:', error);
+        }
+    }
+
+    // Initialize WebSocket
+    function initializeWebSocket() {
+        connectWebSocket();
+        
+        // Event listeners for buttons
+        const reconnectBtn = document.getElementById('reconnectBtn');
+        const resetBtn = document.getElementById('resetCountersBtn');
+        
+        if (reconnectBtn) {
+            reconnectBtn.addEventListener('click', function() {
+                if (socket) {
+                    socket.close();
+                }
+                connectWebSocket();
+            });
+        }
+        
+        if (resetBtn) {
+            resetBtn.addEventListener('click', resetCounters);
+        }
+    }
+
+    function connectWebSocket() {
+        try {
+            socket = new WebSocket('ws://127.0.0.1:8000/ws/traffic/');
+
+            socket.addEventListener('open', function() {
+                console.log('WebSocket Connected');
+                updateConnectionStatus(true);
+            });
+
+            socket.addEventListener('message', function(event) {
+                const data = JSON.parse(event.data);
+                
+                // Handle video stream
+                if (data.image) {
+                    const videoElement = document.getElementById("streamVideo");
+                    if (videoElement) {
+                        videoElement.src = 'data:image/jpeg;base64,' + data.image;
+                    }
+                }
+
+                // Handle vehicle detection updates
+                if (data.vehicle_type && data.vehicle_type !== 'update' && data.vehicle_type !== 'unknown') {
+                    if (vehicleCounts.hasOwnProperty(data.vehicle_type)) {
+                        vehicleCounts[data.vehicle_type]++;
+                        
+                        updateVehicleCounters();
+                        updateVehicleList();
+                        updateTrafficFlowChart(data);
+                        updateDistributionChart(data.vehicle_type);
+                        addDetectionToTable(data);
+                        
+                        console.log(`Vehicle detected: ${data.vehicle_type}`);
+                    }
+                }
+                
+                // Handle count updates
+                if (data.count !== undefined) {
+                    const totalCount = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+                    const totalElement = document.getElementById('totalCount');
+                    if (totalElement) {
+                        totalElement.textContent = totalCount;
+                    }
+                }
+            });
+
+            socket.addEventListener('close', function() {
+                console.log('WebSocket Disconnected');
+                updateConnectionStatus(false);
+                
+                // Attempt to reconnect after 3 seconds
+                setTimeout(connectWebSocket, 3000);
+            });
+
+            socket.addEventListener('error', function(error) {
+                console.error('WebSocket Error:', error);
+                updateConnectionStatus(false);
+            });
+            
+        } catch (error) {
+            console.error('Error creating WebSocket:', error);
+            updateConnectionStatus(false);
+        }
+    }
+
+    function updateConnectionStatus(connected) {
+        const statusElement = document.getElementById('connectionStatus');
+        const alertBox = document.getElementById('alertBox');
+        
+        if (statusElement) {
+            if (connected) {
+                statusElement.textContent = 'Connected';
+                statusElement.classList.remove('disconnected');
+                statusElement.classList.add('connected');
+            } else {
+                statusElement.textContent = 'Disconnected';
+                statusElement.classList.remove('connected');
+                statusElement.classList.add('disconnected');
+            }
+        }
+        
+        if (alertBox) {
+            alertBox.style.display = connected ? 'none' : 'block';
+        }
+    }
+
+    function updateVehicleCounters() {
+        const total = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+        
+        const elements = {
+            'totalCount': total,
+            'carCount': vehicleCounts.car,
+            'busCount': vehicleCounts.bus,
+            'truckCount': vehicleCounts.truck,
+            'miniBusCount': vehicleCounts['mini-bus'],
+            'motorcycleCount': vehicleCounts.motorcycle
+        };
+        
+        Object.entries(elements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        });
+    }
+
+    function updateVehicleList() {
+        const list = document.getElementById('vehicleList');
+        if (!list) return;
+        
+        list.innerHTML = '';
+        
+        Object.entries(vehicleCounts).forEach(([type, count]) => {
+            if (count > 0) {
+                const item = document.createElement('li');
+                item.className = 'vehicle-item';
+                item.innerHTML = `
+                    <span class="vehicle-type">${type.toUpperCase().replace('-', ' ')}</span>
+                    <span class="vehicle-count">${count}</span>
+                `;
+                list.appendChild(item);
+            }
+        });
+    }
+
+    function updateTrafficFlowChart(data) {
+        if (!trafficFlowChart) return;
+        
+        const currentTime = new Date().toLocaleTimeString();
+        const currentCount = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+        
+        trafficData.labels.push(currentTime);
+        trafficData.datasets[0].data.push(currentCount);
+        
+        // Keep only last 15 data points
+        if (trafficData.labels.length > 15) {
+            trafficData.labels.shift();
+            trafficData.datasets[0].data.shift();
+        }
+        
+        trafficFlowChart.update('none');
+    }
+
+    function updateDistributionChart(vehicleType) {
+        if (!vehicleDistributionChart) return;
+        
+        const labelMap = {
+            'car': 0, 'bus': 1, 'truck': 2, 'mini-bus': 3, 'motorcycle': 4
+        };
+        
+        const index = labelMap[vehicleType];
+        if (index !== undefined) {
+            distributionData.datasets[0].data[index] = vehicleCounts[vehicleType];
+            vehicleDistributionChart.update('none');
+        }
+    }
+
+    function addDetectionToTable(data) {
+        const table = document.getElementById('detectionTable');
+        if (!table) return;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${new Date().toLocaleTimeString()}</td>
+            <td>${data.vehicle_type.toUpperCase().replace('-', ' ')}</td>
+            <td>${data.direction || 'Forward'}</td>
+            <td>${data.speed ? data.speed.toFixed(2) + ' km/h' : 'N/A'}</td>
+        `;
+
+        table.insertBefore(row, table.firstChild);
+        
+        // Keep only last 10 rows
+        if (table.rows.length > 10) {
+            table.removeChild(table.lastElementChild);
+        }
+    }
+
+    function resetCounters() {
+        vehicleCounts = {
+            'car': 0, 'bus': 0, 'truck': 0, 'mini-bus': 0, 'motorcycle': 0
+        };
+        
+        updateVehicleCounters();
+        updateVehicleList();
+        
+        // Reset charts
+        if (vehicleDistributionChart) {
+            distributionData.datasets[0].data = [0, 0, 0, 0, 0];
+            vehicleDistributionChart.update();
+        }
+        
+        if (trafficFlowChart) {
+            trafficData.labels = [];
+            trafficData.datasets[0].data = [];
+            trafficFlowChart.update();
+        }
+        
+        // Clear detection table
+        const table = document.getElementById('detectionTable');
+        if (table) {
+            table.innerHTML = '';
+        }
+        
+        console.log('Counters reset');
+    }
+
+    // Initialize Feedback Modal
+    function initializeFeedbackModal() {
+        const feedbackModal = document.getElementById('feedbackModal');
+        const closeFeedbackModal = document.getElementById('closeFeedbackModal');
+        const feedbackIframe = document.getElementById('feedbackIframe');
+        
+        // Only initialize if modal exists
+        if (!feedbackModal) {
+            console.log('Feedback modal not found, skipping initialization');
+            return;
+        }
+
+        function closeFeedback() {
+            feedbackModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if (feedbackIframe) {
+                feedbackIframe.src = feedbackIframe.src; // Reset iframe
+            }
+        }
+
+        // Close button
+        if (closeFeedbackModal) {
+            closeFeedbackModal.addEventListener('click', closeFeedback);
+        }
+
+        // Close when clicking outside
+        feedbackModal.addEventListener('click', function(event) {
+            if (event.target === feedbackModal) {
+                closeFeedback();
+            }
+        });
+
+        // Close with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && feedbackModal.style.display === 'block') {
+                closeFeedback();
+            }
+        });
+        
+        console.log('Feedback modal initialized');
+    }
+
+    // Initialize Traffic Map
+    function initializeTrafficMap() {
+        const mapContainer = document.getElementById('traffic-heatmap');
+        if (!mapContainer) {
+            console.log('Map container not found, skipping map initialization');
+            return;
+        }
+
+        // Clear any existing map instance
+        if (window.trafficMap) {
+            window.trafficMap.remove();
+        }
+
+        try {
+            // Initialize Leaflet map
+            window.trafficMap = L.map('traffic-heatmap').setView([6.5244, 3.3792], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(window.trafficMap);
+
+            var heatmapLayer = new HeatmapOverlay({
+                radius: 25,
+                maxOpacity: 0.8,
+                scaleRadius: true,
+                useLocalExtrema: true,
+                latField: 'lat',
+                lngField: 'lng',
+                valueField: 'count'
+            });
+
+            window.trafficMap.addLayer(heatmapLayer);
+
+            function updateHeatmap(data) {
+                heatmapLayer.setData({ max: 50, data: data });
+                
+                const rawDataElement = document.getElementById('trafficRawData');
+                if (rawDataElement) {
+                    rawDataElement.innerHTML = `
+                        <strong>Live Traffic Data Points:</strong><br>
+                        ${data.map(point => 
+                            `Lat: ${point.lat}, Lng: ${point.lng}, Traffic Level: ${point.count}`
+                        ).join('<br>')}
+                        <br><br><strong>Last Updated:</strong> ${new Date().toLocaleString()}
+                    `;
+                }
+            }
+
+            // Example Traffic Data for Lagos, Nigeria
+            var trafficRawData = [
+                { lat: 6.5244, lng: 3.3792, count: 10 },
+                { lat: 6.5270, lng: 3.3805, count: 25 },
+                { lat: 6.5300, lng: 3.3850, count: 40 },
+                { lat: 6.4585, lng: 3.3900, count: 35 },
+                { lat: 6.5200, lng: 3.3600, count: 20 },
+                { lat: 6.6018, lng: 3.3515, count: 30 },
+                { lat: 6.5795, lng: 3.3211, count: 15 },
+                { lat: 6.4698, lng: 3.5852, count: 28 },
+                { lat: 6.5244, lng: 3.4000, count: 45 },
+                { lat: 6.5355, lng: 3.3087, count: 22 }
+            ];
+
+            updateHeatmap(trafficRawData);
+
+            // Simulate live data updates every 5 seconds
+            setInterval(function() {
+                var updatedData = trafficRawData.map(function(point) {
+                    return {
+                        lat: point.lat,
+                        lng: point.lng,
+                        count: Math.max(5, Math.min(50, point.count + (Math.random() - 0.5) * 10))
+                    };
+                });
+                
+                updateHeatmap(updatedData);
+                trafficRawData = updatedData;
+            }, 5000);
+
+            // Add location markers
+            var locations = [
+                { name: "Victoria Island", lat: 6.5244, lng: 3.3792 },
+                { name: "Lagos Island", lat: 6.5270, lng: 3.3805 },
+                { name: "Ikoyi", lat: 6.5300, lng: 3.3850 },
+                { name: "Ikeja", lat: 6.6018, lng: 3.3515 },
+                { name: "Lekki", lat: 6.4698, lng: 3.5852 }
+            ];
+
+            locations.forEach(function(location) {
+                L.marker([location.lat, location.lng])
+                    .addTo(window.trafficMap)
+                    .bindPopup(`<b>${location.name}</b><br>Lagos Traffic Monitor`);
+            });
+
+            console.log('Traffic heatmap initialized successfully');
+
+        } catch (error) {
+            console.error('Error initializing map:', error);
+            const rawDataElement = document.getElementById('trafficRawData');
+            if (rawDataElement) {
+                rawDataElement.innerHTML = `<span style="color: #e74c3c;">Error loading map: ${error.message}</span>`;
+            }
+        }
+    }
+
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            console.log('Page hidden, maintaining connection');
+        } else {
+            console.log('Page visible, checking connection');
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                connectWebSocket();
+            }
+        }
+    });
+</script>
+{% endcomment %}
+
+{% comment %} cladi. codeb{% endcomment %}
+<script>
+    let socket;
+    let vehicleCounts = {
+        'car': 0,
+        'bus': 0,
+        'truck': 0,
+        'mini-bus': 0,
+        'motorcycle': 0
+    };
+
+    const trafficData = {
+        labels: [],
+        datasets: [{
+            label: 'Traffic Count',
+            data: [],
+            backgroundColor: 'rgba(0, 123, 255, 0.5)'
+        }]
+    };
+
+    const distributionData = {
+        labels: ['Car', 'Bus', 'Truck', 'Mini-Bus', 'Motorcycle'],
+        datasets: [{
+            data: [0, 0, 0, 0, 0],
+            backgroundColor: [
+                '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8'
+            ]
+        }]
+    };
+
+    let trafficFlowChart;
+    let vehicleDistributionChart;
+    let lastUpdateCount = 0;
+
+    function initCharts() {
+        const ctx1 = document.getElementById('trafficFlowChart').getContext('2d');
+        trafficFlowChart = new Chart(ctx1, {
+            type: 'line',
+            data: trafficData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                animation: {
+                    duration: 300
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('vehicleDistributionChart').getContext('2d');
+        vehicleDistributionChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: distributionData,
+            options: { 
+                responsive: true,
+                animation: {
+                    duration: 300
+                }
+            }
+        });
+    }
+
+    function connectWebSocket() {
+      //  socket = new WebSocket('ws://127.0.0.1:8000/ws/traffic/');  original line
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const host = window.location.host; //.split(':')[0]; // Gets just the IP/hostname
+      //  socket = new WebSocket(`${protocol}//${host}:8000/ws/traffic/`);
+        socket = new WebSocket(`${protocol}//${host}/ws/traffic/`);
+
+
+        socket.addEventListener('open', function() {
+            console.log('WebSocket Connected');
+            document.getElementById('connectionStatus').textContent = 'Connected';
+            document.getElementById('connectionStatus').classList.remove('disconnected');
+            document.getElementById('connectionStatus').classList.add('connected');
+            document.getElementById('alertBox').style.display = 'none';
+        });
+
+        socket.addEventListener('message', function(event) {
+            const data = JSON.parse(event.data);
+            
+            // Handle video stream
+            if (data.image) {
+                const videoElement = document.getElementById("streamVideo");
+                videoElement.src = 'data:image/jpeg;base64,' + data.image;
+            }
+
+            // Handle vehicle detection updates
+            if (data.vehicle_type && data.vehicle_type !== 'update' && data.vehicle_type !== 'unknown') {
+                // Update vehicle counts
+                if (vehicleCounts.hasOwnProperty(data.vehicle_type)) {
+                    vehicleCounts[data.vehicle_type]++;
+                    
+                    // Update individual counters
+                    updateVehicleCounters();
+                    
+                    // Update vehicle list
+                    updateVehicleList();
+                    
+                    // Update charts
+                    updateTrafficFlowChart(data);
+                    updateDistributionChart(data.vehicle_type);
+                    
+                    // Add to detection table
+                    addDetectionToTable(data);
+                    
+                    console.log(`Vehicle detected: ${data.vehicle_type}, Total count: ${data.count}`);
+                }
+            }
+            
+            // Handle general updates (like video feed updates)
+            if (data.count !== undefined) {
+                // Update total count
+                const totalCount = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+                document.getElementById('totalCount').textContent = totalCount;
+            }
+        });
+
+        socket.addEventListener('close', function() {
+            console.log('WebSocket Disconnected');
+            document.getElementById('connectionStatus').textContent = 'Disconnected';
+            document.getElementById('connectionStatus').classList.remove('connected');
+            document.getElementById('connectionStatus').classList.add('disconnected');
+            document.getElementById('alertBox').style.display = 'block';
+            
+            // Attempt to reconnect after 3 seconds
+            setTimeout(connectWebSocket, 3000);
+        });
+
+        socket.addEventListener('error', function(error) {
+            console.error('WebSocket Error:', error);
+        });
+    }
+
+    function updateVehicleCounters() {
+        const total = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+        document.getElementById('totalCount').textContent = total;
+        document.getElementById('carCount').textContent = vehicleCounts.car;
+        document.getElementById('busCount').textContent = vehicleCounts.bus;
+        document.getElementById('truckCount').textContent = vehicleCounts.truck;
+        
+        // Update mini-bus and motorcycle if you have elements for them
+        const miniBusElement = document.getElementById('miniBusCount');
+        const motorcycleElement = document.getElementById('motorcycleCount');
+        
+        if (miniBusElement) miniBusElement.textContent = vehicleCounts['mini-bus'];
+        if (motorcycleElement) motorcycleElement.textContent = vehicleCounts.motorcycle;
+    }
+
+    function updateVehicleList() {
+        const list = document.getElementById('vehicleList');
+        list.innerHTML = '';
+        
+        for (const [type, count] of Object.entries(vehicleCounts)) {
+            if (count > 0) {  // Only show vehicles that have been detected
+                const item = document.createElement('li');
+                item.className = 'vehicle-item';
+                item.innerHTML = `
+                    <span class="vehicle-type">${type.toUpperCase().replace('-', ' ')}</span>
+                    <span class="vehicle-count">${count}</span>
+                `;
+                list.appendChild(item);
+            }
+        }
+    }
+
+    function updateTrafficFlowChart(data) {
+        const currentTime = new Date().toLocaleTimeString();
+        const currentCount = Object.values(vehicleCounts).reduce((sum, val) => sum + val, 0);
+        
+        trafficData.labels.push(currentTime);
+        trafficData.datasets[0].data.push(currentCount);
+        
+        // Keep only last 15 data points
+        if (trafficData.labels.length > 15) {
+            trafficData.labels.shift();
+            trafficData.datasets[0].data.shift();
+        }
+        
+        trafficFlowChart.update('none'); // No animation for smoother updates
+    }
+
+    function updateDistributionChart(vehicleType) {
+        const labelMap = {
+            'car': 0,
+            'bus': 1,
+            'truck': 2,
+            'mini-bus': 3,
+            'motorcycle': 4
+        };
+        
+        const index = labelMap[vehicleType];
+        if (index !== undefined) {
+            distributionData.datasets[0].data[index] = vehicleCounts[vehicleType];
+            vehicleDistributionChart.update('none');
+        }
+    }
+
+    function addDetectionToTable(data) {
+        const table = document.getElementById('detectionTable');
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+            <td>${new Date().toLocaleTimeString()}</td>
+            <td>${data.vehicle_type.toUpperCase().replace('-', ' ')}</td>
+            <td>${data.direction || 'Forward'}</td>
+            <td>${data.speed ? data.speed.toFixed(2) + ' km/h' : 'N/A'}</td>
+        `;
+
+        table.insertBefore(row, table.firstChild);
+        
+        // Keep only last 10 rows
+        if (table.rows.length > 10) {
+            table.removeChild(table.lastElementChild);
+        }
+    }
+
+    function resetCounters() {
+        vehicleCounts = {
+            'car': 0,
+            'bus': 0,
+            'truck': 0,
+            'mini-bus': 0,
+            'motorcycle': 0
+        };
+        
+        updateVehicleCounters();
+        updateVehicleList();
+        
+        // Reset charts
+        distributionData.datasets[0].data = [0, 0, 0, 0, 0];
+        vehicleDistributionChart.update();
+        
+        trafficData.labels = [];
+        trafficData.datasets[0].data = [];
+        trafficFlowChart.update();
+        
+        // Clear detection table
+        document.getElementById('detectionTable').innerHTML = '';
+        
+        console.log('Counters reset');
+    }
+
+    // Event listeners
+    document.getElementById('reconnectBtn').addEventListener('click', function() {
+        if (socket) {
+            socket.close();
+        }
+        connectWebSocket();
+    });
+
+    document.getElementById('resetCountersBtn').addEventListener('click', resetCounters);
+
+    // Initialize when DOM is loaded
+    window.addEventListener('DOMContentLoaded', () => {
+        initCharts();
+        connectWebSocket();
+        
+        // Start periodic updates for the video feed
+        setInterval(function() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                    action: "get_update"
+                }));
+            }
+        }, 1000); // Request update every second
+    });
+
+    // Handle page visibility changes to manage WebSocket connection
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            console.log('Page hidden, maintaining connection');
+        } else {
+            console.log('Page visible, checking connection');
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                connectWebSocket();
+            }
+        }
+    }
+    
+    
+    );
+</script> 
+
+
+
+{% comment %} old script for traffic monitoring dashboard
+<script>
   let socket;
   let vehicleCounts = {
-      'car': 0,
-      'bus': 0,
-      'truck': 0,
-      'mini-bus': 0,
-      'motorcycle': 0,
-      'okada': 0
+    
+        'car': 0,
+        'bus': 0,
+        'truck': 0,
+        'mini-bus': 0,
+        'motorcycle': 0,
+        //'okada': 0       
   };
 
   const trafficData = {
@@ -333,7 +1268,7 @@
   };
 
   const distributionData = {
-      labels: ['Car', 'Bus', 'Truck', 'Mini-Bus', 'Motorcycle', 'Okada'],
+      labels: ['Car', 'Bus', 'Truck', 'Mini-Bus', 'Motorcycle'],
       datasets: [{
           data: [0, 0, 0, 0, 0, 0],
           backgroundColor: [
@@ -474,12 +1409,12 @@
   document.getElementById('reconnectBtn').addEventListener('click', connectWebSocket);
   document.getElementById('resetCountersBtn').addEventListener('click', function() {
       vehicleCounts = {
-          'car': 0,
-          'bus': 0,
-          'truck': 0,
-          'mini-bus': 0,
-          'motorcycle': 0,
-          'okada': 0
+        'car': 0,
+        'bus': 0,
+        'truck': 0,
+        'mini-bus': 0,
+        'motorcycle': 0,
+       // 'okada': 0
       };
       document.getElementById('carCount').textContent = 0;
       document.getElementById('busCount').textContent = 0;
@@ -498,7 +1433,9 @@
       initCharts();
       connectWebSocket();
   });
-</script>
+</script> 
+{% endcomment %}
+
 
 
 {% endblock %}

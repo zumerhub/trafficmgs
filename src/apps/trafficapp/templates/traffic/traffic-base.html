@@ -22,6 +22,15 @@
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
     {% comment %} <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/heatmap.min.js"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/npm/leaflet-heatmap/leaflet-heatmap.js"></script>
+
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    
+    <!-- Heatmap.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js" />
+    
       <!-- Custom CSS -->
 
     {% block extra_css %}{% endblock %}
@@ -63,11 +72,11 @@
 
 
 <!-- Footer -->
-    <footer>
+    {% comment %} <footer>
       {% block footer %}
       {% include "traffic/footer.html" %}
       {% endblock footer %}
-    </footer> 
+    </footer>  {% endcomment %}
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

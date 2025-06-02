@@ -16,7 +16,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'src'))
-# sys.path.append(os.path.join(BASE_DIR / 'apps'))
+sys.path.append(os.path.join(BASE_DIR / 'apps'))
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -66,6 +66,9 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'http://172.20.10.4:8000',
+    'https://your-ngrok-url.ngrok-free.app',
+
     'https://your-production-url.com',
 ]
 
@@ -73,7 +76,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (for testing)
 
 # ngrok config
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '172.20.10.4', '.ngrok-free.app', '*']
 
 # start ngrok
 # ngrok http 8000
@@ -101,9 +104,13 @@ WSGI_APPLICATION = 'trafficsite.wsgi.application'
 ASGI_APPLICATION = 'trafficsite.asgi.application'
 
 
+
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": ["redis://127.0.0.1:6379/0"],
+        },
     },
 }
 
