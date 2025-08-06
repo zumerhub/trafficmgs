@@ -38,7 +38,7 @@ TrafficMGS is a web-based, smart traffic management solution built for Lagos, Ni
 > <img width="1920" height="1080" alt="Screenshot from 2025-06-06 15-05-39" src="https://github.com/user-attachments/assets/62232918-3245-4834-90b4-b58355975426" />
 
 
-> Modele results here
+> Model results here
 > <img width="2250" height="1500" alt="PR_curve" src="https://github.com/user-attachments/assets/a96e352b-2437-42f4-8558-f3050403a27b" />
 )
 
